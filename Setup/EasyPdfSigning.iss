@@ -72,7 +72,7 @@ de.WelcomeLabel2=Diese Anwendung ermöglicht einfaches digitales Signieren von PD
 de.ClickNext=Klicken Sie auf Weiter, um die Einfache PDF-Signierung zu installieren, oder auf Abbrechen zum Beenden des Setups.
 de.FinishedHeadingLabel=%n%n%n%nDie Einfache PDF-Signierung ist jetzt installiert.
 de.FinishedLabelNoIcons=Die Anwendung kann im Kontextmenü einer PDF-Datei unter „Öffnen mit...“ gestartet werden.
-de.FinishedLabel=Die Anwendung kann über die installierte Startmenü-Verknüpfung oder im Kontextmenü einer PDF-Datei unter „Öffnet mit...“ gestartet werden.
+de.FinishedLabel=Die Anwendung kann über die installierte Startmenü-Verknüpfung oder im Kontextmenü einer PDF-Datei unter „Öffnen mit...“ gestartet werden.
 de.ClickFinish=Klicken Sie auf Fertigstellen, um das Setup zu beenden.
 
 [CustomMessages]

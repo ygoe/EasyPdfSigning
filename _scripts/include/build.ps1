@@ -30,21 +30,21 @@ Write-Host "Application version: $revId"
 
 if ($config -eq "all" -or $config.Contains("build-debug"))
 {
-	Build-Solution "EasyPdfSigning.sln" "Debug" "x86" 2
+	Build-Solution "EasyPdfSigning.sln" "Debug" "x86" 1
 }
 
 # ---------- Release builds ----------
 
 if ($config -eq "all" -or $config.Contains("build-release"))
 {
-	Build-Solution "EasyPdfSigning.sln" "Release" "x86" 2
+	Build-Solution "EasyPdfSigning.sln" "Release" "x86" 1
 }
 
 # ---------- Release setups ----------
 
 if ($config -eq "all" -or $config.Contains("setup-release"))
 {
-	Create-Setup "Setup\EasyPdfSigning.iss" Release 5
+	Create-Setup "Setup\EasyPdfSigning.iss" Release 3
 }
 
 # ---------------------------------------------------------------------------------

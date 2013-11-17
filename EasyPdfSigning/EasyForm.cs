@@ -94,17 +94,8 @@ namespace EasyPdfSigning
 				{
 					cn = cert.Subject;
 				}
+				// More details in the separate dialog
 
-				// TODO: Display issuer name somewhere as well (currently not enough space)
-				//string issuerCN = ExtractDNField(cert.Issuer, "CN");
-				//if (issuerCN != null)
-				//{
-				//    cn += "   Aussteller: " + issuerCN;
-				//}
-
-				//cn += "   (gültig bis " + cert.NotAfter.ToShortDateString() + ")";
-				//cn += "   Hash: " + cert.GetCertHashString().Substring(0, 8) + "…";
-	
 				CertificateCombo.Items.Add(cn);
 
 				if (cert.GetCertHashString() == selectedHash)
@@ -437,7 +428,7 @@ namespace EasyPdfSigning
 
 			PDFEncryption pdfEnc = new PDFEncryption();
 			pdfEnc.UserPwd = "";
-			//pdfEnc.OwnerPwd = "yj589hf389gbu0f893h8hbfqrebps1";
+			//pdfEnc.OwnerPwd = "1234";
 			pdfEnc.OwnerPwd = "";
 			pdfEnc.Encryption = true;   // Use 128 bit instead of 40 bit, but still RC4
 			// Permissions explanation: http://www.pdflib.com/knowledge-base/pdf-security/permissions/
