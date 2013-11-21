@@ -31,6 +31,11 @@ Write-Host "Application version: $revId"
 if ($config -eq "all" -or $config.Contains("build-debug"))
 {
 	Build-Solution "EasyPdfSigning.sln" "Debug" "x86" 1
+
+	if ($config -eq "all" -or $config.Contains("sign-app"))
+	{
+		Sign-File "EasyPdfSigning\bin\x86\Debug\EasyPdfSigning.exe" "Example_Developer.pfx" "1234" 1
+	}
 }
 
 # ---------- Release builds ----------
@@ -38,6 +43,11 @@ if ($config -eq "all" -or $config.Contains("build-debug"))
 if ($config -eq "all" -or $config.Contains("build-release"))
 {
 	Build-Solution "EasyPdfSigning.sln" "Release" "x86" 1
+
+	if ($config -eq "all" -or $config.Contains("sign-app"))
+	{
+		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "Example_Developer.pfx" "1234" 1
+	}
 }
 
 # ---------- Release setups ----------
@@ -45,6 +55,11 @@ if ($config -eq "all" -or $config.Contains("build-release"))
 if ($config -eq "all" -or $config.Contains("setup-release"))
 {
 	Create-Setup "Setup\EasyPdfSigning.iss" Release 3
+
+	if ($config -eq "all" -or $config.Contains("sign-setup"))
+	{
+		Sign-File "Setup\EasyPdfSigning-Setup-$revId.exe" "Example_Developer.pfx" "1234" 1
+	}
 }
 
 # ---------------------------------------------------------------------------------

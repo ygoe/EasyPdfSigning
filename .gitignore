@@ -1,3 +1,6 @@
+# Project-specific files
+Setup/*-Setup-*.exe
+
 # User-specific files
 *.suo
 *.user

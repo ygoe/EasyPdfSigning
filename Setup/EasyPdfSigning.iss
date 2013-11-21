@@ -1,6 +1,9 @@
 #ifndef RevId
 	#define RevId "0.1"
 #endif
+#ifndef ShortRevId
+	#define ShortRevId Copy(RevId, 1, Pos(".", RevId) - 1)
+#endif
 
 #include "scripts\products.iss"
 #include "scripts\products\stringversion.iss"
@@ -18,7 +21,7 @@ AppCopyright=© Yves Goergen
 AppPublisher=Yves Goergen
 AppPublisherURL=http://dev.unclassified.de/apps/easypdfsigning
 AppName={cm:LocalAppName}
-AppVersion={#RevId}
+AppVersion={#ShortRevId}
 AppMutex=Unclassified.EasyPdfSigning
 AppId={{842C5D74-F440-4283-AE9C-73F88A053DE1}
 MinVersion=0,5.01sp3
@@ -44,7 +47,7 @@ SolidCompression=True
 InternalCompressLevel=max
 VersionInfoVersion=1.0
 VersionInfoCompany=Yves Goergen
-VersionInfoDescription=EasyPdfSigning {#RevId} setup
+VersionInfoDescription=EasyPdfSigning {#ShortRevId} Setup
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"

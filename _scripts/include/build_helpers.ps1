@@ -207,6 +207,12 @@ function Create-DistArchive($archive, $listFile, $time)
 	$global:actions += $action
 }
 
+function Sign-File($file, $keyFile, $password, $time)
+{
+	$action = @{ action = "sign"; file = $file; keyFile = $keyFile; password = $password; time = $time }
+	$global:actions += $action
+}
+
 function Do-Build-Solution($solution, $configuration, $buildPlatform, $progressAfter)
 {
 	Write-Host ""
@@ -464,6 +470,29 @@ function Do-Create-DistArchive($archive, $listFile, $progressAfter)
 	& ($toolsPath + "FlashConsoleWindow") -progress $progressAfter
 }
 
+function Do-Sign-File($file, $keyFile, $password, $progressAfter)
+{
+	Write-Host ""
+	Write-Host -ForegroundColor DarkCyan "Digitally signing file $file..."
+
+	# Find the signtool binary
+	$signtoolBin = Check-RegFilename "hklm:\SOFTWARE\Microsoft\Microsoft SDKs\Windows" "CurrentInstallFolder"
+	$signtoolBin = Check-Filename "$signtoolBin\Bin\signtool.exe"
+	if ($signtoolBin -eq $null)
+	{
+		WaitError "signtool binary not found"
+		exit 1
+	}
+
+	& $signtoolBin sign /f "$sourcePath\$keyFile" /p "$password" /t http://timestamp.verisign.com/scripts/timstamp.dll "$sourcePath\$file"
+	if (-not $?)
+	{
+		WaitError "Digitally signing failed"
+		exit 1
+	}
+	& ($toolsPath + "FlashConsoleWindow") -progress $progressAfter
+}
+
 function Begin-BuildScript($projectTitle, $batchMode = $false)
 {
 	$global:batchMode = $batchMode
@@ -514,6 +543,10 @@ function End-BuildScript()
 			"distarchive"
 			{
 				Do-Create-DistArchive $action.archive $action.listFile $progressAfter
+			}
+			"sign"
+			{
+				Do-Sign-File $action.file $action.keyFile $action.password $progressAfter
 			}
 		}
 		$timeSum += $action.time
