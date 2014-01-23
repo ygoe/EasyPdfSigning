@@ -47,7 +47,7 @@ SolidCompression=True
 InternalCompressLevel=max
 VersionInfoVersion=1.0
 VersionInfoCompany=Yves Goergen
-VersionInfoDescription=EasyPdfSigning {#ShortRevId} Setup
+VersionInfoDescription=EasyPdfSigning Setup
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"

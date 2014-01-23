@@ -13,7 +13,7 @@ $sourcePath = $MyInvocation.MyCommand.Definition | split-path -parent | split-pa
 # Set the application version number. Disable for Git repository revision.
 #
 #$revId = "1.0"
-#$revId = Get-AssemblyInfoVersion "OnVistaGrabber\Properties\AssemblyInfo.cs" "AssemblyInformationalVersion"
+#$revId = Get-AssemblyInfoVersion "EasyPdfSigning\Properties\AssemblyInfo.cs" "AssemblyInformationalVersion"
 $revId = Get-GitRevision
 
 # Disable FASTBUILD mode to always include a full version number in the assembly version info.
@@ -34,7 +34,7 @@ if ($config -eq "all" -or $config.Contains("build-debug"))
 
 	if ($config -eq "all" -or $config.Contains("sign-app"))
 	{
-		Sign-File "EasyPdfSigning\bin\x86\Debug\EasyPdfSigning.exe" "Example_Developer.pfx" "1234" 1
+		Sign-File "EasyPdfSigning\bin\x86\Debug\EasyPdfSigning.exe" "signkey.pfx" "@signkey.password" 1
 	}
 }
 
@@ -46,7 +46,7 @@ if ($config -eq "all" -or $config.Contains("build-release"))
 
 	if ($config -eq "all" -or $config.Contains("sign-app"))
 	{
-		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "Example_Developer.pfx" "1234" 1
+		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "signkey.pfx" "@signkey.password" 1
 	}
 }
 
@@ -58,7 +58,7 @@ if ($config -eq "all" -or $config.Contains("setup-release"))
 
 	if ($config -eq "all" -or $config.Contains("sign-setup"))
 	{
-		Sign-File "Setup\EasyPdfSigning-Setup-$revId.exe" "Example_Developer.pfx" "1234" 1
+		Sign-File "Setup\EasyPdfSigning-Setup-$revId.exe" "signkey.pfx" "@signkey.password" 1
 	}
 }
 
