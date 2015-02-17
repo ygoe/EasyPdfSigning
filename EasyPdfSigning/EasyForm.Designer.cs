@@ -67,7 +67,7 @@
 			this.SignatureAppearancePanel = new System.Windows.Forms.Panel();
 			this.line1 = new Unclassified.UI.Line();
 			this.signSpinner = new Unclassified.UI.ProgressSpinner();
-			this.mouseFilter1 = new Unclassified.MouseFilter(this.components);
+			this.mouseFilter1 = new Unclassified.Util.MouseFilter(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.PageNum)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.LeftNum)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.BottomNum)).BeginInit();
@@ -610,7 +610,7 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Label label13;
-		private Unclassified.MouseFilter mouseFilter1;
+		private Unclassified.Util.MouseFilter mouseFilter1;
 		private System.Windows.Forms.LinkLabel WebLink;
 		private System.Windows.Forms.Button SelectCertButton;
 		private System.Windows.Forms.CheckBox VisibleSignatureCheck;

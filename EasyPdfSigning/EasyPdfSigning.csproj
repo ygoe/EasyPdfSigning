@@ -98,6 +98,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unclassified.FieldLog">
+      <HintPath>..\packages\Unclassified.FieldLog.1.38.77\lib\net40-client\Unclassified.FieldLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cert.cs" />
@@ -133,8 +136,9 @@
     <Compile Include="Unclassified\Automation\Window.cs" />
     <Compile Include="Unclassified\Automation\WindowNotFoundException.cs" />
     <Compile Include="Unclassified\Automation\WindowProperties.cs" />
-    <Compile Include="Unclassified\DelayedCall.cs" />
-    <Compile Include="Unclassified\MouseFilter.cs">
+    <Compile Include="Unclassified\Util\DelayedCall.cs" />
+    <Compile Include="Unclassified\Util\GlobalMutex.cs" />
+    <Compile Include="Unclassified\Util\MouseFilter.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Unclassified\UI\Line.cs">
@@ -143,7 +147,7 @@
     <Compile Include="Unclassified\UI\ProgressSpinner.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Unclassified\WinApi.cs" />
+    <Compile Include="Unclassified\Util\WinApi.cs" />
     <EmbeddedResource Include="CertificateSelectionDialog.resx">
       <DependentUpon>CertificateSelectionDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />
+    <None Include="packages.config" />
     <None Include="Resources\Warning.png" />
     <Content Include="signature.ico" />
   </ItemGroup>

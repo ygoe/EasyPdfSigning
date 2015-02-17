@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using PdfToImage;
-using Unclassified;
+using Unclassified.Util;
 
 namespace EasyPdfSigning
 {
@@ -538,7 +538,7 @@ namespace EasyPdfSigning
 
 		private void WebLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Process.Start("http://dev.unclassified.de/apps/easypdfsigning?ref=inapp_easypdfsigning");
+			Process.Start("http://unclassified.software/apps/easypdfsigning?ref=inapp_easypdfsigning");
 		}
 
 		private float mm2pt(float mm)

@@ -26,7 +26,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Unclassified.Automation;
 
-namespace Unclassified
+namespace Unclassified.Util
 {
 	/// <summary>
 	/// Provides mouse filtering features like hiding the cursor after a timeout of inactivity or dispatching

@@ -1,25 +1,27 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("EasyPdfSigning")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("EasyPdfSigning")]
-[assembly: AssemblyCopyright("© 2013 Yves Goergen")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("EasyPdfSigning")]
+[assembly: AssemblyDescription("EasyPdfSigning")]
+[assembly: AssemblyCopyright("© Yves Goergen, GNU GPL")]
+[assembly: AssemblyCompany("unclassified software development")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// Assembly identity version. Must be a dotted-numeric version.
+[assembly: AssemblyVersion("1.0")]
+
+// Repeat for Win32 file version resource because the assembly version is expanded to 4 parts.
+[assembly: AssemblyFileVersion("1.0")]
+
+// Informational version string, used for the About dialog, error reports and the setup script.
+// Can be any freely formatted string containing punctuation, letters and revision codes.
+[assembly: AssemblyInformationalVersion("1.{dmin:2015}_{chash:6}{!:+}")]
+
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+
+[assembly: ComVisible(false)]

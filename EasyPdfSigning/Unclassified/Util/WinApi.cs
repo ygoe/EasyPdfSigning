@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32;
 
-namespace Unclassified
+namespace Unclassified.Util
 {
 	public partial class WinApi
 	{

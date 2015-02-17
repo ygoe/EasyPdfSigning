@@ -1,24 +1,7 @@
-// Copyright (c) 2009, Yves Goergen, http://unclassified.de
-// All rights reserved.
+// Copyright (c) 2009, Yves Goergen, http://unclassified.software/source/line
 //
-// Redistribution and use in source and binary forms, with or without modification, are permitted
-// provided that the following conditions are met:
-//
-// * Redistributions of source code must retain the above copyright notice, this list of conditions
-//   and the following disclaimer.
-// * Redistributions in binary form must reproduce the above copyright notice, this list of
-//   conditions and the following disclaimer in the documentation and/or other materials provided
-//   with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE.
+// Copying and distribution of this file, with or without modification, are permitted provided the
+// copyright notice and this notice are preserved. This file is offered as-is, without any warranty.
 
 using System;
 using System.ComponentModel;
@@ -43,6 +26,17 @@ namespace Unclassified.UI
 		/// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
 		protected override void Dispose(bool disposing)
 		{
+			if (pen1 != null)
+			{
+				pen1.Dispose();
+				pen1 = null;
+			}
+			if (pen2 != null)
+			{
+				pen2.Dispose();
+				pen2 = null;
+			}
+
 			if (disposing && (components != null))
 			{
 				components.Dispose();
@@ -64,6 +58,8 @@ namespace Unclassified.UI
 		private Line3DStyle line3DStyle = Line3DStyle.Flat;
 		private Color borderColor = SystemColors.ControlText;
 		private Pen pen1, pen2;
+		private Color light3dColor = SystemColors.ControlLightLight;
+		private Color dark3dColor = SystemColors.ControlDark;
 		private int prevWidth, prevHeight;
 		private bool internalResizing = false;
 		private DashStyle dashStyle = DashStyle.Solid;
@@ -72,6 +68,9 @@ namespace Unclassified.UI
 		{
 			InitializeComponent();
 
+			SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
+			DoubleBuffered = true;
 			TabStop = false;
 
 			pen1 = new Pen(borderColor, 1);
@@ -138,25 +137,7 @@ namespace Unclassified.UI
 			set
 			{
 				line3DStyle = value;
-				if (line3DStyle == Line3DStyle.Flat)
-				{
-					pen1 = new Pen(borderColor, 1);
-					pen1.DashStyle = dashStyle;
-				}
-				else if (line3DStyle == Line3DStyle.Inset)
-				{
-					pen1 = new Pen(SystemColors.ControlLightLight, 1);
-					pen2 = new Pen(SystemColors.ControlDark, 1);
-					pen1.DashStyle = dashStyle;
-					pen2.DashStyle = dashStyle;
-				}
-				else if (line3DStyle == Line3DStyle.Outset)
-				{
-					pen1 = new Pen(SystemColors.ControlDark, 1);
-					pen2 = new Pen(SystemColors.ControlLightLight, 1);
-					pen1.DashStyle = dashStyle;
-					pen2.DashStyle = dashStyle;
-				}
+				UpdatePens();
 				UpdateSize();
 			}
 		}
@@ -171,8 +152,7 @@ namespace Unclassified.UI
 			set
 			{
 				borderColor = value;
-				pen1 = new Pen(borderColor, 1);
-				pen1.DashStyle = dashStyle;
+				UpdatePens();
 				Invalidate();
 			}
 		}
@@ -187,8 +167,39 @@ namespace Unclassified.UI
 			set
 			{
 				dashStyle = value;
-				pen1.DashStyle = value;
-				pen2.DashStyle = value;
+				UpdatePens();
+				Invalidate();
+			}
+		}
+
+		[Description("Custom light 3D color"), Category("Appearance")]
+		[DefaultValue(typeof(SystemColors), "ControlLightLight")]
+		public Color Light3dColor
+		{
+			get
+			{
+				return light3dColor;
+			}
+			set
+			{
+				light3dColor = value;
+				UpdatePens();
+				Invalidate();
+			}
+		}
+
+		[Description("Custom dark 3D color"), Category("Appearance")]
+		[DefaultValue(typeof(SystemColors), "ControlDark")]
+		public Color Dark3dColor
+		{
+			get
+			{
+				return dark3dColor;
+			}
+			set
+			{
+				dark3dColor = value;
+				UpdatePens();
 				Invalidate();
 			}
 		}
@@ -311,6 +322,40 @@ namespace Unclassified.UI
 			Invalidate();
 		}
 
+		private void UpdatePens()
+		{
+			if (pen1 != null)
+			{
+				pen1.Dispose();
+				pen1 = null;
+			}
+			if (pen2 != null)
+			{
+				pen2.Dispose();
+				pen2 = null;
+			}
+			
+			if (line3DStyle == Line3DStyle.Flat)
+			{
+				pen1 = new Pen(borderColor, 1);
+				pen1.DashStyle = dashStyle;
+			}
+			else if (line3DStyle == Line3DStyle.Inset)
+			{
+				pen1 = new Pen(light3dColor, 1);
+				pen2 = new Pen(dark3dColor, 1);
+				pen1.DashStyle = dashStyle;
+				pen2.DashStyle = dashStyle;
+			}
+			else if (line3DStyle == Line3DStyle.Outset)
+			{
+				pen1 = new Pen(dark3dColor, 1);
+				pen2 = new Pen(light3dColor, 1);
+				pen1.DashStyle = dashStyle;
+				pen2.DashStyle = dashStyle;
+			}
+		}
+
 		protected override void OnPaint(PaintEventArgs pe)
 		{
 			if (line3DStyle == Line3DStyle.Flat)
@@ -359,25 +404,22 @@ namespace Unclassified.UI
 					pe.Graphics.DrawLine(pen1, 0, 1, Width - 2, Height - 1);
 				}
 			}
-
-			// OnPaint-Basisklasse wird aufgerufen
-			base.OnPaint(pe);
 		}
 
-		protected override void OnPaintBackground(PaintEventArgs pevent)
-		{
-			//base.OnPaintBackground(pevent);
-		}
+		//protected override void OnPaintBackground(PaintEventArgs pevent)
+		//{
+		//    //base.OnPaintBackground(pevent);
+		//}
 
-		protected override CreateParams CreateParams
-		{
-			get
-			{
-				CreateParams cp = base.CreateParams;
-				cp.ExStyle |= 0x20 /* WS_EX_TRANSPARENT */;
-				return cp;
-			}
-		}
+		//protected override CreateParams CreateParams
+		//{
+		//    get
+		//    {
+		//        CreateParams cp = base.CreateParams;
+		//        cp.ExStyle |= 0x20 /* WS_EX_TRANSPARENT */;
+		//        return cp;
+		//    }
+		//}
 	}
 
 	public enum LineOrientation

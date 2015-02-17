@@ -1,61 +1,76 @@
-#ifndef RevId
-	#define RevId "0.1"
-#endif
-#ifndef ShortRevId
-	#define ShortRevId Copy(RevId, 1, Pos(".", RevId) - 1)
-#endif
+; Determine product and file version from the application to be installed
+#define RevFileName '..\EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe'
+#define RevId GetStringFileInfo(RevFileName, 'ProductVersion')
+#define TruncRevId GetFileVersion(RevFileName)
 
-#include "scripts\products.iss"
-#include "scripts\products\stringversion.iss"
-#include "scripts\products\winversion.iss"
-#include "scripts\products\fileversion.iss"
-#include "scripts\products\dotnetfxversion.iss"
+; Include 3rd-party software check and download support
+#include "include\products.iss"
+#include "include\products\stringversion.iss"
+#include "include\products\winversion.iss"
+#include "include\products\fileversion.iss"
+#include "include\products\dotnetfxversion.iss"
 
-#include "scripts\products\msi31.iss"
+; Include modules for required products
+#include "include\products\msi31.iss"
+#include "include\products\dotnetfx40client.iss"
+#include "include\products\dotnetfx40full.iss"
+#include "include\products\dotnetfx45.iss"
 
-#include "scripts\products\dotnetfx40client.iss"
-#include "scripts\products\dotnetfx40full.iss"
+; Include general helper functions
+#include "include\util-code.iss"
 
 [Setup]
-AppCopyright=© Yves Goergen
-AppPublisher=Yves Goergen
-AppPublisherURL=http://dev.unclassified.de/apps/easypdfsigning
+; Names and versions for the Windows programs listing
 AppName={cm:LocalAppName}
-AppVersion={#ShortRevId}
-AppMutex=Unclassified.EasyPdfSigning
+AppVersion={#RevId}
+AppCopyright=© Yves Goergen, GNU GPL
+AppPublisher=Yves Goergen
+AppPublisherURL=http://unclassified.software/apps/easypdfsigning
+
+; Setup file version
+VersionInfoDescription=EasyPdfSigning Setup
+VersionInfoVersion={#TruncRevId}
+VersionInfoCompany=Yves Goergen
+
+; General application information
 AppId={{842C5D74-F440-4283-AE9C-73F88A053DE1}
+AppMutex=Unclassified.EasyPdfSigning
 MinVersion=0,5.01sp3
 
-ShowLanguageDialog=no
-ChangesAssociations=yes
-
+; General setup information
 DefaultDirName={pf}\Unclassified\EasyPdfSigning
 AllowUNCPath=False
 DefaultGroupName={cm:LocalAppName}
+DisableDirPage=auto
+DisableProgramGroupPage=auto
+ShowLanguageDialog=no
+ChangesAssociations=yes
 
-WizardImageFile=signature_128.bmp
+; Setup design
+; Large image max. 164x314 pixels, small image max. 55x58 pixels
 WizardImageBackColor=$ffffff
 WizardImageStretch=no
+WizardImageFile=signature_128.bmp
 WizardSmallImageFile=signature_48.bmp
 
+; Uninstaller configuration
 UninstallDisplayName={cm:LocalAppName}
 UninstallDisplayIcon={app}\EasyPdfSigning.exe
 
-OutputDir=.
+; Setup package creation
+OutputDir=bin
 OutputBaseFilename=EasyPdfSigning-Setup-{#RevId}
 SolidCompression=True
 InternalCompressLevel=max
-VersionInfoVersion=1.0
-VersionInfoCompany=Yves Goergen
-VersionInfoDescription=EasyPdfSigning Setup
+
+; This file must be included after other setup settings
+#include "include\previous-installation.iss"
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 
 [LangOptions]
-;de.LanguageName=Deutsch
-;de.LanguageID=$0407
+; More setup design
 DialogFontName=Segoe UI
 DialogFontSize=9
 WelcomeFontName=Segoe UI
@@ -70,26 +85,26 @@ FinishedLabelNoIcons=The application may be launched in a PDF file’s context men
 FinishedLabel=The application may be launched by selecting the installed start menu icon or in a PDF file’s context menu under “Open with...”.
 ClickFinish=Click Finish to exit the setup.
 
-de.WelcomeLabel1=%n%n%n%nWillkommen zum Setup-Assistenten zur Einfachen PDF-Signierung
-de.WelcomeLabel2=Diese Anwendung ermöglicht einfaches digitales Signieren von PDF-Dokumenten ohne deren Neuaufbau und unterstützt mehrfaches Signieren.%n%nVersion: {#RevId}
-de.ClickNext=Klicken Sie auf Weiter, um die Einfache PDF-Signierung zu installieren, oder auf Abbrechen zum Beenden des Setups.
-de.FinishedHeadingLabel=%n%n%n%nDie Einfache PDF-Signierung ist jetzt installiert.
-de.FinishedLabelNoIcons=Die Anwendung kann im Kontextmenü einer PDF-Datei unter „Öffnen mit...“ gestartet werden.
-de.FinishedLabel=Die Anwendung kann über die installierte Startmenü-Verknüpfung oder im Kontextmenü einer PDF-Datei unter „Öffnen mit...“ gestartet werden.
-de.ClickFinish=Klicken Sie auf Fertigstellen, um das Setup zu beenden.
-
 [CustomMessages]
-NgenMessage=Optimising application performance
 LocalAppName=Easy PDF Signing
+Upgrade=&Upgrade
+UpdatedHeadingLabel=%n%n%n%n%nFieldLog was upgraded.
+NgenMessage=Optimising application performance (this may take a moment)
 
-de.NgenMessage=Anwendungs-Performance optimieren
-de.LocalAppName=Einfache PDF-Signierung
+; Add translations after messages have been defined
+#include "EasyPdfSigning.de.iss"
 
 [Files]
 Source: "..\EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\EasyPdfSigning\bin\x86\Release\gsdll32.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\EasyPdfSigning\bin\x86\Release\itextsharp.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\EasyPdfSigning\bin\x86\Release\PdfToImage.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\EasyPdfSigning\bin\x86\Release\Unclassified.FieldLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+[Dirs]
+; Create user-writable log directory in the installation directory.
+; FieldLog will first try to write log file there.
+Name: "{app}\log"; Permissions: users-modify
 
 [Registry]
 Root: HKCU; Subkey: "Software\Unclassified\EasyPdfSigning"; Flags: uninsdeletekey
@@ -101,26 +116,60 @@ Root: HKCR; Subkey: "Applications\EasyPdfSigning.exe\shell\open"; ValueType: str
 Root: HKCR; Subkey: "Applications\EasyPdfSigning.exe\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\EasyPdfSigning.exe"" ""%1"""
 
 [Icons]
+; Start menu
 Name: "{group}\{cm:LocalAppName}"; Filename: "{app}\EasyPdfSigning.exe"; IconFilename: "{app}\EasyPdfSigning.exe"
 Name: "{group}\Website"; Filename: "http://dev.unclassified.de/apps/easypdfsigning"
 
 [Run]
 Filename: {win}\Microsoft.NET\Framework\v4.0.30319\ngen.exe; Parameters: "install ""{app}\EasyPdfSigning.exe"""; StatusMsg: "{cm:NgenMessage}"; Flags: runhidden
+Filename: {app}\EasyPdfSigning.exe; WorkingDir: {app}; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 Filename: {win}\Microsoft.NET\Framework\v4.0.30319\ngen.exe; Parameters: uninstall {app}\EasyPdfSigning.exe; Flags: runhidden
 
+[UninstallDelete]
+; Delete log files
+Type: files; Name: "{app}\log\EasyPdfSigning-*.fl"
+Type: files; Name: "{app}\log\!README.txt"
+Type: dirifempty; Name: "{app}\log"
+Type: dirifempty; Name: "{app}"
+
 [Code]
-function InitializeSetup(): boolean;
+function InitializeSetup: boolean;
+var
+	cmp: Integer;
 begin
-	//init windows version
-	initwinversion();
+	Result := InitCheckDowngrade;
 
-	msi31('3.1');
+	if Result then
+	begin
+		// Initialise 3rd-party requirements management
+		initwinversion();
 
-	// if no .netfx 4.0 is found, install the client (smallest)
-	if (not netfxinstalled(NetFx40Client, '') and not netfxinstalled(NetFx40Full, '')) then
-		dotnetfx40client();
+		msi31('3.1');
 
-	Result := true;
+		// If no .NET 4.0 is found, install the client profile (smallest)
+		if (not netfxinstalled(NetFx40Client, '') and not netfxinstalled(NetFx40Full, '')) then
+			dotnetfx40client();
+	end;
 end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+	// Make upgrade install quicker
+	Result := ((PageID = wpSelectTasks) or (PageID = wpReady)) and PrevInstallExists;
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+begin
+	if CurPageID = wpWelcome then
+	begin
+		if PrevInstallExists then
+		begin
+			// Change "Next" button to "Upgrade" on the first page, because it won't ask any more
+			WizardForm.NextButton.Caption := ExpandConstant('{cm:Upgrade}');
+			WizardForm.FinishedHeadingLabel.Caption := ExpandConstant('{cm:UpdatedHeadingLabel}');
+		end;
+	end;
+end;
+

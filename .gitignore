@@ -1,10 +1,13 @@
 # Project-specific files
-Setup/*-Setup-*.exe
+Setup/bin/
 
 # User-specific files
 *.suo
 *.user
 *.sln.docstates
+
+# Downloaded NuGet packages
+/packages/*/
 
 # Build results
 [Dd]ebug/
@@ -74,7 +77,6 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 *.p12
-*.password
 *.publishsettings
 *.bak
 .internal
@@ -99,6 +101,10 @@ _NCrunch_*
 
 # Dotfuscator
 Dotfuscated/
+
+# PowerShell build framework tools
+_scripts/buildscript/private.ps1
+!_scripts/bin/
 
 # Windows/other detritus
 Thumbs.db
