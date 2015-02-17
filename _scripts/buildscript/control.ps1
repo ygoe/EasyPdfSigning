@@ -39,7 +39,7 @@ if ((IsSelected "setup-release") -or (IsSelected "commit") -or (IsSelected "publ
 
 	if ((IsSelected "sign-setup") -or (IsSelected "publish"))
 	{
-		Sign-File "Setup\bin\EasyPdfSigning-Setup-$revId.exe" "$signKeyFile" "$signPassword" 1
+		Sign-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$signKeyFile" "$signPassword" 1
 	}
 }
 
@@ -47,7 +47,7 @@ if ((IsSelected "setup-release") -or (IsSelected "commit") -or (IsSelected "publ
 if (IsSelected "commit")
 {
 	# Clean up test build files
-	Delete-File "Setup\bin\EasyPdfSigning-$revId.exe" 0
+	Delete-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" 0
 	Delete-File ".local\EasyPdfSigning-$revId.pdbx" 0
 
 	Git-Commit 5
@@ -56,7 +56,14 @@ if (IsSelected "commit")
 # Prepare publishing a release
 if (IsSelected "publish")
 {
-	Git-Log ".local\EasyPdfSigning.txt" 1
+	Git-Log ".local\EasyPdfSigningChanges.txt" 1
+}
+
+# Copy to website (local)
+if (IsSelected "transfer-web")
+{
+	Copy-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$webDir\files\apps\easypdfsigning\" 0
+	Copy-File ".local\EasyPdfSigningChanges.txt" "$webDir\files\apps\easypdfsigning\" 0
 }
 
 End-BuildScript

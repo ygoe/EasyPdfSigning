@@ -59,7 +59,7 @@ UninstallDisplayIcon={app}\EasyPdfSigning.exe
 
 ; Setup package creation
 OutputDir=bin
-OutputBaseFilename=EasyPdfSigning-Setup-{#RevId}
+OutputBaseFilename=EasyPdfSigningSetup-{#RevId}
 SolidCompression=True
 InternalCompressLevel=max
 
