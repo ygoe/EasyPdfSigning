@@ -167,7 +167,8 @@ namespace EasyPdfSigning
 		{
 			ValidateUIState();
 
-			if (CertificateCombo.SelectedIndex > -1)
+			if (CertificateCombo.SelectedIndex > -1 &&
+				CertificateCombo.SelectedIndex < certificates.Count)
 			{
 				X509Certificate2 cert = certificates[CertificateCombo.SelectedIndex];
 				using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Unclassified\EasyPdfSigning"))
@@ -182,7 +183,8 @@ namespace EasyPdfSigning
 			CertificateSelectionDialog dlg = new CertificateSelectionDialog();
 
 			X509Certificate2 selectedCert = null;
-			if (CertificateCombo.SelectedIndex > -1)
+			if (CertificateCombo.SelectedIndex > -1 &&
+				CertificateCombo.SelectedIndex < certificates.Count)
 			{
 				selectedCert = certificates[CertificateCombo.SelectedIndex];
 			}
@@ -315,7 +317,8 @@ namespace EasyPdfSigning
 
 			dlg.ReasonLabel.Text = ReasonCombo.Text;
 			dlg.DateLabel.Text = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss K");
-			if (CertificateCombo.SelectedIndex > -1)
+			if (CertificateCombo.SelectedIndex > -1 &&
+				CertificateCombo.SelectedIndex < certificates.Count)
 			{
 				X509Certificate2 selectedCert = certificates[CertificateCombo.SelectedIndex];
 
