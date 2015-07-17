@@ -7,63 +7,63 @@ Begin-BuildScript "EasyPdfSigning"
 Set-VcsVersion "" "/require git"
 
 # Debug builds
-if (IsSelected "build-debug")
+if (IsSelected build-debug)
 {
 	Build-Solution "EasyPdfSigning.sln" "Debug" "x86" 1
 
-	if (IsSelected "sign-app")
+	if (IsSelected sign-app)
 	{
-		Sign-File "EasyPdfSigning\bin\x86\Debug\EasyPdfSigning.exe" "$signKeyFile" "$signPassword" 1
+		Sign-File "EasyPdfSigning\bin\x86\Debug\EasyPdfSigning.exe" "$signKeyFile" "$signPassword"
 	}
 }
 
 # Release builds
-if ((IsSelected "build-release") -or (IsSelected "commit") -or (IsSelected "publish"))
+if (IsAnySelected build-release commit publish)
 {
 	Build-Solution "EasyPdfSigning.sln" "Release" "x86" 1
 	
 	# Archive debug symbols for later source lookup
 	EnsureDirExists ".local"
-	Exec-Console "_scripts\bin\PdbConvert.exe" "$rootDir\EasyPdfSigning\bin\x86\Release\* /srcbase $rootDir /optimize /outfile $rootDir\.local\EasyPdfSigning-$revId.pdbx" 1
+	Exec-Console "_scripts\bin\PdbConvert.exe" "$rootDir\EasyPdfSigning\bin\x86\Release\* /srcbase $rootDir /optimize /outfile $rootDir\.local\EasyPdfSigning-$revId.pdbx"
 
-	if ((IsSelected "sign-app") -or (IsSelected "publish"))
+	if (IsAnySelected sign-app publish)
 	{
-		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "$signKeyFile" "$signPassword" 1
+		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "$signKeyFile" "$signPassword"
 	}
 }
 
 # Release setups
-if ((IsSelected "setup-release") -or (IsSelected "commit") -or (IsSelected "publish"))
+if (IsAnySelected setup-release commit publish)
 {
-	Create-Setup "Setup\EasyPdfSigning.iss" Release 3
+	Create-Setup "Setup\EasyPdfSigning.iss" Release
 
-	if ((IsSelected "sign-setup") -or (IsSelected "publish"))
+	if (IsAnySelected sign-setup publish)
 	{
-		Sign-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$signKeyFile" "$signPassword" 1
+		Sign-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$signKeyFile" "$signPassword"
 	}
 }
 
 # Commit to repository
-if (IsSelected "commit")
+if (IsSelected commit)
 {
 	# Clean up test build files
-	Delete-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" 0
-	Delete-File ".local\EasyPdfSigning-$revId.pdbx" 0
+	Delete-File "Setup\bin\EasyPdfSigningSetup-$revId.exe"
+	Delete-File ".local\EasyPdfSigning-$revId.pdbx"
 
-	Git-Commit 5
+	Git-Commit
 }
 
 # Prepare publishing a release
-if (IsSelected "publish")
+if (IsSelected publish)
 {
-	Git-Log ".local\EasyPdfSigningChanges.txt" 1
+	Git-Log ".local\EasyPdfSigningChanges.txt"
 }
 
 # Copy to website (local)
-if (IsSelected "transfer-web")
+if (IsSelected transfer-web)
 {
-	Copy-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$webDir\files\apps\easypdfsigning\" 0
-	Copy-File ".local\EasyPdfSigningChanges.txt" "$webDir\files\apps\easypdfsigning\" 0
+	Copy-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$webDir\files\apps\easypdfsigning\"
+	Copy-File ".local\EasyPdfSigningChanges.txt" "$webDir\files\apps\easypdfsigning\"
 }
 
 End-BuildScript
