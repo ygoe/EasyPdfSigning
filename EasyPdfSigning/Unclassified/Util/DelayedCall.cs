@@ -17,7 +17,7 @@ namespace Unclassified.Util
 	/// // Variable to keep track of the instance. This is not required for normal operation.
 	/// private DelayedCall dc = null;
 	///
-	/// private void button1_Click(object sender, EventArgs e)
+	/// private void button1_Click(object sender, EventArgs args)
 	/// {
 	///     // Change button text in 2 seconds
 	///     dc = DelayedCall<string>.Start(SetButtonText, "I was clicked", 2000);
@@ -28,7 +28,7 @@ namespace Unclassified.Util
 	///     button1.Text = newText;
 	/// }
 	///
-	/// private void HurryUpButton_Click(object sender, EventArgs e)
+	/// private void HurryUpButton_Click(object sender, EventArgs args)
 	/// {
 	///     // Invoke SetButtonText now, if the timeout isn't elapsed yet
 	///     if (dc != null) dc.Fire();
@@ -81,7 +81,7 @@ namespace Unclassified.Util
 		/// Synchronisation context to invoke the callback method in.
 		/// </summary>
 		protected SynchronizationContext context;
-		
+
 		// More information on the SynchronizationContext thing: http://www.codeproject.com/cs/threads/SyncContextTutorial.asp
 
 		/// <summary>
@@ -399,7 +399,7 @@ namespace Unclassified.Util
 		/// The event will not be fired when the timeout has finished before, so when calling
 		/// <see cref="Fire"/> near the time when the timer would elapse, you won't risk of calling
 		/// it twice. If you need to invoke the callback function now and the timer has already
-		/// elapsed, use <see cref="Reset"/>(0).
+		/// elapsed, use <see cref="Reset(int)"/> with 0 milliseconds.
 		/// </remarks>
 		public void Fire()
 		{
@@ -470,7 +470,7 @@ namespace Unclassified.Util
 			{
 				Cancel();
 				Start();
-				// ODOT: This sets and unsets the cancelled flag, so immediate execution of the
+				// TODO: This sets and unsets the cancelled flag, so immediate execution of the
 				//       previous timer right after this method call cannot be eliminated.
 			}
 		}
@@ -486,7 +486,7 @@ namespace Unclassified.Util
 				Cancel();
 				Milliseconds = milliseconds;
 				Start();
-				// ODOT: This sets and unsets the cancelled flag, so immediate execution of the
+				// TODO: This sets and unsets the cancelled flag, so immediate execution of the
 				//       previous timer right after this method call cannot be eliminated.
 				//       (Derived classes are also affected.)
 			}
@@ -505,7 +505,7 @@ namespace Unclassified.Util
 			{
 				lock (timerLock)
 				{
-					return (int) timer.Interval;
+					return (int)timer.Interval;
 				}
 			}
 			set
@@ -525,7 +525,7 @@ namespace Unclassified.Util
 					else
 					{
 						timer.Interval = value;
-						// ODOT: Is this untested?
+						// TODO: Is this untested?
 					}
 				}
 			}

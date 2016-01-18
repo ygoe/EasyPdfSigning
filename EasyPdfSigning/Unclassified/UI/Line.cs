@@ -15,6 +15,7 @@ namespace Unclassified.UI
 	public class Line : Control
 	{
 		#region Designer stuff
+
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -52,6 +53,7 @@ namespace Unclassified.UI
 		{
 			components = new System.ComponentModel.Container();
 		}
+
 		#endregion Designer stuff
 
 		private LineOrientation orientation = LineOrientation.Horizontal;
@@ -90,7 +92,7 @@ namespace Unclassified.UI
 			}
 		}
 
-		void Line_SizeChanged(object sender, EventArgs e)
+		private void Line_SizeChanged(object sender, EventArgs args)
 		{
 			if (internalResizing) return;
 
@@ -111,6 +113,7 @@ namespace Unclassified.UI
 		}
 
 		#region New properties
+
 		[DefaultValue(LineOrientation.Horizontal)]
 		[Description("Line orientation"), Category("Appearance")]
 		public LineOrientation Orientation
@@ -227,9 +230,11 @@ namespace Unclassified.UI
 		//        }
 		//    }
 		//}
+
 		#endregion New properties
 
 		#region Disabled properties
+
 		[Browsable(false)]
 		public override Font Font
 		{
@@ -294,6 +299,7 @@ namespace Unclassified.UI
 				base.TabStop = value;
 			}
 		}
+
 		#endregion Disabled properties
 
 		private void UpdateSize()
@@ -334,7 +340,7 @@ namespace Unclassified.UI
 				pen2.Dispose();
 				pen2 = null;
 			}
-			
+
 			if (line3DStyle == Line3DStyle.Flat)
 			{
 				pen1 = new Pen(borderColor, 1);

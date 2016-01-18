@@ -34,8 +34,8 @@ namespace Unclassified.Util
 		/// Process exit handler. Closes the mutex.
 		/// </summary>
 		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+		/// <param name="args"></param>
+		private static void CurrentDomain_ProcessExit(object sender, EventArgs args)
 		{
 			instance.Dispose();
 		}
@@ -100,7 +100,7 @@ namespace Unclassified.Util
 		/// <returns>true if the mutex is owned; otherwise, false.</returns>
 		public bool TryWait(TimeSpan timeout)
 		{
-			return TryWait((int) timeout.TotalMilliseconds);
+			return TryWait((int)timeout.TotalMilliseconds);
 		}
 
 		/// <summary>
