@@ -125,7 +125,7 @@ Filename: {win}\Microsoft.NET\Framework\v4.0.30319\ngen.exe; Parameters: "instal
 Filename: {app}\EasyPdfSigning.exe; WorkingDir: {app}; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
-Filename: {win}\Microsoft.NET\Framework\v4.0.30319\ngen.exe; Parameters: uninstall {app}\EasyPdfSigning.exe; Flags: runhidden
+Filename: {win}\Microsoft.NET\Framework\v4.0.30319\ngen.exe; Parameters: "uninstall ""{app}\EasyPdfSigning.exe"""; Flags: runhidden
 
 [UninstallDelete]
 ; Delete log files
