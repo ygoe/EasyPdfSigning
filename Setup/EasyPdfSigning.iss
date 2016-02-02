@@ -1,7 +1,7 @@
 ; Determine product and file version from the application to be installed
 #define RevFileName '..\EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe'
 #define RevId GetStringFileInfo(RevFileName, 'ProductVersion')
-#define TruncRevId GetFileVersion(RevFileName)
+#define ShortRevId GetFileVersion(RevFileName)
 
 ; Include 3rd-party software check and download support
 #include "include\products.iss"
@@ -10,11 +10,9 @@
 #include "include\products\fileversion.iss"
 #include "include\products\dotnetfxversion.iss"
 
-; Include modules for required products
+; Include modules ONLY for required products to be installed
 #include "include\products\msi31.iss"
 #include "include\products\dotnetfx40client.iss"
-#include "include\products\dotnetfx40full.iss"
-#include "include\products\dotnetfx45.iss"
 
 ; Include general helper functions
 #include "include\util-code.iss"
@@ -29,18 +27,21 @@ AppPublisherURL=http://unclassified.software/apps/easypdfsigning
 
 ; Setup file version
 VersionInfoDescription=EasyPdfSigning Setup
-VersionInfoVersion={#TruncRevId}
+VersionInfoVersion={#ShortRevId}
 VersionInfoCompany=Yves Goergen
 
 ; General application information
 AppId={{842C5D74-F440-4283-AE9C-73F88A053DE1}
 AppMutex=Unclassified.EasyPdfSigning
 MinVersion=0,5.01sp3
+; isxdl.dll may not be DEP compatible
+DEPCompatible=no
 
 ; General setup information
 DefaultDirName={pf}\Unclassified\EasyPdfSigning
 AllowUNCPath=False
 DefaultGroupName={cm:LocalAppName}
+DisableWelcomePage=no
 DisableDirPage=auto
 DisableProgramGroupPage=auto
 ShowLanguageDialog=no
@@ -48,7 +49,6 @@ ChangesAssociations=yes
 
 ; Setup design
 ; Large image max. 164x314 pixels, small image max. 55x58 pixels
-WizardImageBackColor=$ffffff
 WizardImageStretch=no
 WizardImageFile=signature_128.bmp
 WizardSmallImageFile=signature_48.bmp
@@ -135,9 +135,7 @@ Type: dirifempty; Name: "{app}\log"
 Type: dirifempty; Name: "{app}"
 
 [Code]
-function InitializeSetup: boolean;
-var
-	cmp: Integer;
+function InitializeSetup: Boolean;
 begin
 	Result := InitCheckDowngrade;
 
@@ -149,7 +147,7 @@ begin
 		msi31('3.1');
 
 		// If no .NET 4.0 is found, install the client profile (smallest)
-		if (not netfxinstalled(NetFx40Client, '') and not netfxinstalled(NetFx40Full, '')) then
+		if (not netfxinstalled(NetFx40Client, '') and not netfxinstalled(NetFx40Full, '') and not netfxinstalled(NetFx4x, '')) then
 			dotnetfx40client();
 	end;
 end;
@@ -157,7 +155,7 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
 	// Make upgrade install quicker
-	Result := ((PageID = wpSelectTasks) or (PageID = wpReady)) and PrevInstallExists;
+	Result := ((PageID = wpSelectTasks) or ((PageID = wpReady) and (GetArrayLength(products) = 0))) and PrevInstallExists;
 end;
 
 procedure CurPageChanged(CurPageID: Integer);

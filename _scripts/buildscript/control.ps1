@@ -26,7 +26,7 @@ if (IsAnySelected build-release commit publish)
 	EnsureDirExists ".local"
 	Exec-Console "_scripts\bin\PdbConvert.exe" "$rootDir\EasyPdfSigning\bin\x86\Release\* /srcbase $rootDir /optimize /outfile $rootDir\.local\EasyPdfSigning-$revId.pdbx"
 
-	if (IsAnySelected sign-app publish)
+	if (IsAnySelected sign-app)
 	{
 		Sign-File "EasyPdfSigning\bin\x86\Release\EasyPdfSigning.exe" "$signKeyFile" "$signPassword"
 	}
@@ -37,7 +37,7 @@ if (IsAnySelected setup-release commit publish)
 {
 	Create-Setup "Setup\EasyPdfSigning.iss" Release
 
-	if (IsAnySelected sign-setup publish)
+	if (IsAnySelected sign-setup)
 	{
 		Sign-File "Setup\bin\EasyPdfSigningSetup-$revId.exe" "$signKeyFile" "$signPassword"
 	}
